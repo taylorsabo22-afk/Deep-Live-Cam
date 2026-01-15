@@ -100,6 +100,8 @@ Users are expected to use this software responsibly and legally. If using a real
 
 **Please be aware that the installation requires technical skills and is not for beginners. Consider downloading the quickstart version.**
 
+> 📱 **Android Users**: See [ANDROID.md](ANDROID.md) for Android/Termux installation instructions.
+
 <details>
 <summary>Click to see the process</summary>
 
@@ -291,6 +293,25 @@ python run.py --execution-provider openvino
 ```
 </details>
 
+## Platform Support
+
+Deep-Live-Cam supports multiple platforms:
+
+| Platform | GUI Support | Performance | Installation Guide |
+|----------|-------------|-------------|-------------------|
+| Windows | ✅ Full | ⚡ Excellent (with GPU) | See Installation section above |
+| macOS (Intel) | ✅ Full | ⚡ Good | See Installation section above |
+| macOS (Apple Silicon) | ✅ Full | ⚡ Excellent (CoreML) | See Installation section above |
+| Linux | ✅ Full | ⚡ Excellent (with GPU) | See Installation section above |
+| Android (Termux) | ❌ Headless only | 🐌 Slow (CPU only) | See [ANDROID.md](ANDROID.md) |
+
+**Android Notes:**
+- GUI interface not available (runs in headless/CLI mode only)
+- CPU-only execution (no GPU acceleration)
+- Best suited for image processing, not real-time video
+- Requires 4GB+ RAM, 5GB+ storage
+- See [ANDROID.md](ANDROID.md) for detailed setup instructions
+
 ## Usage
 
 **1. Image/Video Mode**
@@ -309,7 +330,33 @@ python run.py --execution-provider openvino
 -   Use a screen capture tool like OBS to stream.
 -   To change the face, select a new source image.
 
-## Command Line Arguments (Unmaintained)
+**3. Headless/CLI Mode (Required for Android)**
+
+For systems without GUI support (like Android/Termux) or automated processing:
+
+```bash
+# Basic image processing
+python run.py -s source_face.jpg -t target_image.jpg -o output.jpg
+
+# Video processing with options
+python run.py \
+  --source source_face.jpg \
+  --target input_video.mp4 \
+  --output output_video.mp4 \
+  --keep-fps \
+  --keep-audio \
+  --execution-provider cpu
+
+# Process multiple faces
+python run.py -s source.jpg -t target.jpg -o output.jpg --many-faces
+
+# Limit resources (useful on Android)
+python run.py -s source.jpg -t target.jpg -o output.jpg --max-memory 2 --execution-threads 2
+```
+
+Using the `-s/--source` argument automatically enables CLI mode (no GUI).
+
+## Command Line Arguments
 
 ```
 options:
@@ -334,7 +381,7 @@ options:
   -v, --version                                            show program's version number and exit
 ```
 
-Looking for a CLI mode? Using the -s/--source argument will make the run program in cli mode.
+**Android/Termux Users**: See [ANDROID.md](ANDROID.md) for platform-specific usage examples.
 
 ## Press
 
