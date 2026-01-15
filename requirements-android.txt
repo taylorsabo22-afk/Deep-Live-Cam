@@ -23,12 +23,15 @@ psutil==5.9.8
 pillow==11.1.0
 
 # PyTorch CPU version (lighter for Android)
+# Updated to 2.6.0+ to address security vulnerabilities:
+# - CVE heap buffer overflow (fixed in 2.2.0)
+# - CVE use-after-free (fixed in 2.2.0)  
+# - torch.load RCE vulnerability (fixed in 2.6.0)
 # Note: Full PyTorch may be too large for some Android devices
 # Consider using ONNX models only if space is limited
-# Install with: pip install torch==2.0.1 torchvision==0.15.2 --index-url https://download.pytorch.org/whl/cpu
 --extra-index-url https://download.pytorch.org/whl/cpu
-torch==2.0.1
-torchvision==0.15.2
+torch==2.6.0
+torchvision==0.21.0
 
 # Optional: TensorFlow Lite instead of full TensorFlow
 # tensorflow-lite==2.14.0

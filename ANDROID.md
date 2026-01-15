@@ -66,7 +66,10 @@ source venv/bin/activate
 pip install -r requirements-android.txt
 ```
 
-**Note**: Installation may take 30-60 minutes and require significant storage space.
+**Note**: 
+- Installation may take 30-60 minutes and require significant storage space.
+- The requirements file uses PyTorch 2.6.0+ to address known security vulnerabilities.
+- If you encounter issues, ensure you have at least 2GB free space for PyTorch alone.
 
 ### Step 4: Download Models
 
