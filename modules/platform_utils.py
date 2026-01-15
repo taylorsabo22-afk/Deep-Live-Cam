@@ -31,7 +31,8 @@ def is_android() -> bool:
                 version_info = f.read().lower()
                 if 'android' in version_info:
                     return True
-        except:
+        except (OSError, IOError, PermissionError):
+            # File doesn't exist or can't be read
             pass
     
     return False

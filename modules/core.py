@@ -257,7 +257,7 @@ def run() -> None:
     parse_args()
     
     # Auto-detect Android/Termux and force headless mode if not already set
-    if platform_utils.should_force_headless() and not modules.globals.headless:
+    if not modules.globals.headless and platform_utils.should_force_headless():
         print(f"Detected platform: {platform_utils.get_platform_name()}")
         print("GUI not available on this platform, forcing headless mode")
         modules.globals.headless = True
