@@ -25,8 +25,8 @@ pillow==11.1.0
 # PyTorch CPU version (lighter for Android)
 # Note: Full PyTorch may be too large for some Android devices
 # Consider using ONNX models only if space is limited
-torch --index-url https://download.pytorch.org/whl/cpu
-torchvision --index-url https://download.pytorch.org/whl/cpu
+torch==2.0.1 --index-url https://download.pytorch.org/whl/cpu
+torchvision==0.15.2 --index-url https://download.pytorch.org/whl/cpu
 
 # Optional: TensorFlow Lite instead of full TensorFlow
 # tensorflow-lite==2.14.0

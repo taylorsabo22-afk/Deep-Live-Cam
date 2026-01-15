@@ -25,7 +25,6 @@ try:
 
     # Apply the patch automatically when this module is imported
     apply_patch()
-    
 except ImportError:
     # Tkinter not available (e.g., on Android/Termux)
     # This is fine - the application will run in headless mode
