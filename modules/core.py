@@ -17,7 +17,16 @@ import tensorflow
 
 import modules.globals
 import modules.metadata
-import modules.ui as ui
+import modules.platform_utils as platform_utils
+
+# Conditionally import UI only if GUI is available
+ui = None
+if not platform_utils.should_force_headless():
+    try:
+        import modules.ui as ui
+    except ImportError:
+        print("Warning: GUI modules not available, running in headless mode")
+
 from modules.processors.frame.core import get_frame_processors_modules
 from modules.utilities import has_image_extension, is_image, is_video, detect_fps, create_video, extract_frames, get_temp_frame_paths, restore_audio, create_temp, move_temp, clean_temp, normalize_output_path
 
@@ -172,7 +181,7 @@ def pre_check() -> bool:
 
 def update_status(message: str, scope: str = 'DLC.CORE') -> None:
     print(f'[{scope}] {message}')
-    if not modules.globals.headless:
+    if not modules.globals.headless and ui is not None:
         ui.update_status(message)
 
 def start() -> None:
@@ -182,7 +191,7 @@ def start() -> None:
     update_status('Processing...')
     # process image to image
     if has_image_extension(modules.globals.target_path):
-        if modules.globals.nsfw_filter and ui.check_and_ignore_nsfw(modules.globals.target_path, destroy):
+        if modules.globals.nsfw_filter and ui is not None and ui.check_and_ignore_nsfw(modules.globals.target_path, destroy):
             return
         try:
             shutil.copy2(modules.globals.target_path, modules.globals.output_path)
@@ -198,7 +207,7 @@ def start() -> None:
             update_status('Processing to image failed!')
         return
     # process image to videos
-    if modules.globals.nsfw_filter and ui.check_and_ignore_nsfw(modules.globals.target_path, destroy):
+    if modules.globals.nsfw_filter and ui is not None and ui.check_and_ignore_nsfw(modules.globals.target_path, destroy):
         return
 
     if not modules.globals.map_faces:
@@ -246,6 +255,13 @@ def destroy(to_quit=True) -> None:
 
 def run() -> None:
     parse_args()
+    
+    # Auto-detect Android/Termux and force headless mode if not already set
+    if not modules.globals.headless and platform_utils.should_force_headless():
+        print(f"Detected platform: {platform_utils.get_platform_name()}")
+        print("GUI not available on this platform, forcing headless mode")
+        modules.globals.headless = True
+    
     if not pre_check():
         return
     for frame_processor in get_frame_processors_modules(modules.globals.frame_processors):
@@ -255,5 +271,8 @@ def run() -> None:
     if modules.globals.headless:
         start()
     else:
+        if ui is None:
+            print("ERROR: GUI modules not available. Please run in headless mode with -s, -t, and -o arguments.")
+            return
         window = ui.init(start, destroy, modules.globals.lang)
         window.mainloop()

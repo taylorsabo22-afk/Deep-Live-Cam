@@ -1,0 +1,55 @@
+# Android/Termux Compatible Requirements for Deep-Live-Cam
+# Install these on Android/Termux environment
+# Note: Some packages may require additional system packages via pkg/apt
+
+# Core dependencies
+numpy>=1.23.5,<2
+typing-extensions>=4.8.0
+
+# Computer Vision (headless version for Android)
+opencv-python-headless==4.10.0.84
+
+# ONNX Runtime (CPU only for Android compatibility)
+onnx==1.18.0
+onnxruntime==1.22.0
+
+# Face analysis
+insightface==0.7.3
+
+# System utilities
+psutil==5.9.8
+
+# Image processing
+pillow==11.1.0
+
+# PyTorch CPU version (lighter for Android)
+# Updated to 2.6.0+ to address security vulnerabilities:
+# - CVE heap buffer overflow (fixed in 2.2.0)
+# - CVE use-after-free (fixed in 2.2.0)  
+# - torch.load RCE vulnerability (fixed in 2.6.0)
+# Note: Full PyTorch may be too large for some Android devices
+# Consider using ONNX models only if space is limited
+--extra-index-url https://download.pytorch.org/whl/cpu
+torch==2.6.0
+torchvision==0.21.0
+
+# Optional: TensorFlow Lite instead of full TensorFlow
+# tensorflow-lite==2.14.0
+
+# Face enhancement (optional - can be heavy)
+# Uncomment if you have enough storage and RAM
+# protobuf==4.25.1
+# git+https://github.com/xinntao/BasicSR.git@master
+# git+https://github.com/TencentARC/GFPGAN.git@master
+
+# NSFW filter (optional)
+opennsfw2==0.10.2
+protobuf==4.25.1
+
+# NOTE: GUI dependencies (customtkinter, tk) are NOT included
+# as they don't work on Android. Use headless mode only.
+
+# Additional Termux-specific notes:
+# Before installing, run:
+# pkg install python python-pip cmake ninja build-essential libjpeg-turbo libpng
+# pkg install ffmpeg opencv
